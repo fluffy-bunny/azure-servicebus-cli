@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceBusCLI", "ServiceBusCLI\ServiceBusCLI.csproj", "{1D0D044C-8C0C-4E91-90B4-B5D063FE3CF4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{06D60577-6CB7-4926-98AC-56EDDF58F5B5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D0D044C-8C0C-4E91-90B4-B5D063FE3CF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D0D044C-8C0C-4E91-90B4-B5D063FE3CF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D0D044C-8C0C-4E91-90B4-B5D063FE3CF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D0D044C-8C0C-4E91-90B4-B5D063FE3CF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06D60577-6CB7-4926-98AC-56EDDF58F5B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06D60577-6CB7-4926-98AC-56EDDF58F5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06D60577-6CB7-4926-98AC-56EDDF58F5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06D60577-6CB7-4926-98AC-56EDDF58F5B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD7C2DF9-46B6-4CF4-8C48-70CBC9F353F3}
+	EndGlobalSection
+EndGlobal
