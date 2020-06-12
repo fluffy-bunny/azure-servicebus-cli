@@ -74,58 +74,26 @@ Set you queue settings;
                     services
                         .AddMediatR(typeof(Program).Assembly)
                         .AddAutoMapper(typeof(Program).Assembly);
-                    services.AddSingleton<IQueueClientAccessor>(sp =>
+                    services.AddSingleton<QueueClient>(sp =>
                     {
-                        var result = new QueueClientAccessor();
-                        try
-                        {
-                            var settings = sp.GetRequiredService(typeof(ISessionSettings)) as ISessionSettings;
-                            var queueUri = $"sb://{settings.Namespace}.servicebus.windows.net/";
-                            var tokenProvider = TokenProvider.CreateManagedIdentityTokenProvider();
-                            var queueClient = new QueueClient(queueUri, settings.Queue, tokenProvider);
-                            result.QueueClient = queueClient;
-                        }
-                        catch (Exception ex)
-                        {
-                            result.QueueClient = null;
-                            throw;
-                        }
-                        return result;
- 
+                        var settings = sp.GetRequiredService(typeof(ISessionSettings)) as ISessionSettings;
+                        var queueUri = $"sb://{settings.Namespace}.servicebus.windows.net/";
+                        var tokenProvider = TokenProvider.CreateManagedIdentityTokenProvider();
+                        var queueClient = new QueueClient(queueUri, settings.Queue, tokenProvider);
+                        return queueClient;
                     });
-                    services.AddSingleton<IMessageReceiverAccessor>(sp =>
+
+                    services.AddSingleton<IMessageReceiver>(sp =>
                     {
-                        var result = new MessageReceiverAccessor();
-                        try
-                        {
-                            var settings = sp.GetRequiredService(typeof(ISessionSettings)) as ISessionSettings;
-                            var queueUri = $"sb://{settings.Namespace}.servicebus.windows.net/";
-                            var tokenProvider = TokenProvider.CreateManagedIdentityTokenProvider();
-                            var messageReciever = new MessageReceiver(queueUri, settings.Queue, tokenProvider);
-                            result.MessageReceiver = messageReciever;
-                        }
-                        catch(Exception ex)
-                        {
-                            result.MessageReceiver = null;
-                        }
-                        return result;
-                    });
-                    services.AddSingleton<ISecurityAccessSignatureProviderAssessor>(sp =>
-                    {
-                        var result = new SecurityAccessSignatureProviderAssessor();
-                        var svcSecurityAccessSignatureSettings = sp.GetRequiredService(typeof(AppSettings<GenerateSecurityAccessSignature.SecurityAccessSignature>)) as AppSettings<GenerateSecurityAccessSignature.SecurityAccessSignature>;
-                        var settings = svcSecurityAccessSignatureSettings.Load(GenerateSecurityAccessSignature.SettingsFileName);
-                        if (settings != null)
-                        {
-                            result.SecurityAccessSignatureProvider = (ISecurityAccessSignatureProvider)sp.GetRequiredService(typeof(ISecurityAccessSignatureProvider));
-                        }
-                        return result;
+                        var settings = sp.GetRequiredService(typeof(ISessionSettings)) as ISessionSettings;
+                        var queueUri = $"sb://{settings.Namespace}.servicebus.windows.net/";
+                        var tokenProvider = TokenProvider.CreateManagedIdentityTokenProvider();
+                        var messageReciever = new MessageReceiver(queueUri, settings.Queue, tokenProvider);
+                        return messageReciever;
                     });
                     services.AddSingleton<IServiceBusQueueUtils, ServiceBusQueueUtils>();
                     services.AddSingleton<ISessionSettings, SessionSettings>();
                     services.AddSingleton<ISecurityAccessSignatureProvider, SecurityAccessSignatureProvider>();
-
-
 
 
                     services.AddSingleton<ISerializer, Serializer>();

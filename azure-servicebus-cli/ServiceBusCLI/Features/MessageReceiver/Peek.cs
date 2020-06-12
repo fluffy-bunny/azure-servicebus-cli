@@ -17,9 +17,9 @@ namespace ServiceBusCLI.Features.MessageReceiver
         {
             public IMessageReceiver MessageReceiver { get; }
 
-            public Request(IMessageReceiverAccessor messageReceiverAccessor)
+            public Request(IMessageReceiver messageReceiver)
             {
-                MessageReceiver = messageReceiverAccessor.MessageReceiver;
+                MessageReceiver = messageReceiver;
             }
         }
 

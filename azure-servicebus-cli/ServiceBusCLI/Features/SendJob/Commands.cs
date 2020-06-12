@@ -21,14 +21,9 @@ namespace ServiceBusCLI.Features.SendJob
                 IMediator mediator,
                 IMapper mapper, 
                 IConsole console,
-                IQueueClientAccessor queueClientAccessor,
                 SendMessage<Job>.Request request)
             {
-                if(queueClientAccessor.QueueClient == null)
-                {
-                    console.WriteLine($"QueueClient is null, did you forget to call service-bus-settings");
-                    return;
-                }
+                
                 var command = mapper.Map(this, request);
                 var job = new Job
                 {

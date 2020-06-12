@@ -3,6 +3,7 @@ using Contracts;
 using McMaster.Extensions.CommandLineUtils;
 using MediatR;
 using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceBusCLI.Utils;
@@ -31,15 +32,10 @@ namespace ServiceBusCLI.Features.MessageReceiver
                 IMediator mediator,
                 IMapper mapper,
                 IConsole console,
-                IMessageReceiverAccessor messageReceiverAccessor,
                 ISerializer serializer,
                 Receive.Request request)
             {
-                if (messageReceiverAccessor.MessageReceiver == null)
-                {
-                    console.WriteLine($"QueueClient is null, did you forget to call service-bus-settings");
-                    return;
-                }
+               
                 var command = mapper.Map(this, request);
                 console.WriteLine($"Sending Request....");
                 var response = await mediator.Send(command);
@@ -87,15 +83,9 @@ namespace ServiceBusCLI.Features.MessageReceiver
                 IMediator mediator,
                 IMapper mapper,
                 IConsole console,
-                IMessageReceiverAccessor messageReceiverAccessor,
                 ISerializer serializer,
                 Peek.Request request)
             {
-                if (messageReceiverAccessor.MessageReceiver == null)
-                {
-                    console.WriteLine($"QueueClient is null, did you forget to call service-bus-settings");
-                    return;
-                }
                 var command = mapper.Map(this, request);
                 console.WriteLine($"Sending Request....");
                 var response = await mediator.Send(command);

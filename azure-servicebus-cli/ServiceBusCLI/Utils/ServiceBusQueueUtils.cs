@@ -9,10 +9,10 @@ namespace ServiceBusCLI.Utils
     {
         public ServiceBusQueueUtils(
             ISessionSettings sessionSettings,
-            ISecurityAccessSignatureProviderAssessor assessor)
+            ISecurityAccessSignatureProvider securityAccessSignatureProvider)
         {
             SessionSettings = sessionSettings;
-            SecurityAccessSignatureProvider = assessor.SecurityAccessSignatureProvider;
+            SecurityAccessSignatureProvider = securityAccessSignatureProvider;
 
         }
 

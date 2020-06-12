@@ -24,9 +24,9 @@ namespace ServiceBusCLI.Features.SendMessage
             public ISerializer Serializer { get; private set; }
             public T Message { get; internal set; }
 
-            public Request(IQueueClientAccessor queueClientAccessor, ISerializer serializer)
+            public Request(QueueClient queueClient, ISerializer serializer)
             {
-                QueueClient = queueClientAccessor.QueueClient;
+                QueueClient = queueClient;
                 Serializer = serializer;
             }
         }
