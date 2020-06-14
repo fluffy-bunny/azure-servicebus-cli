@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AzureManagementCLI.Features.VirtualMachineScaleSet;
 using Common.Extensions;
 using McMaster.Extensions.CommandLineUtils;
 using MediatR;
@@ -12,11 +13,21 @@ namespace AzureManagementCLI
 {
     [Command(
         Name = "AzureManagementCLI",
-        Description = @"AzureManagementCLI")]
+        Description = @"AzureManagementCLI
+
+Please set the following Azure environment variables:
+ARM_CLIENT_ID
+ARM_CLIENT_SECRET
+ARM_SUBSCRIPTION_ID
+ARM_TENANT_ID
+
+")]
     [HelpOption]
     [VersionOptionFromMember(MemberName = "GetVersion")]
     [Subcommand(
-        typeof(Features.When.Commands.WhenCommand)
+        typeof(Features.When.Commands.WhenCommand),
+        typeof(Features.VirtualMachineScaleSet.Commands.VMSSListCommand)
+
         )
        ]
     internal class Program
@@ -45,6 +56,9 @@ namespace AzureManagementCLI
                         .AddAutoMapper(typeof(Program).Assembly);
                     services.AddAzureClient();
                     services.AddCommon();
+
+                    services.AddTransient<VMSSList.Request>();
+
                 });
         }
         private int OnExecute(CommandLineApplication app, IConsole console)

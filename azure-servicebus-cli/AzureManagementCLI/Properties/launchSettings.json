@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AzureManagementCLI": {
+      "commandName": "Project",
+      "commandLineArgs": "vmss-list -g rg-scalesets"
+    }
+  }
+}
