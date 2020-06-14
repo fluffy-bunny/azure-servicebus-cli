@@ -1,4 +1,6 @@
-﻿namespace Contracts
+﻿using Contracts;
+
+namespace Common
 {
     public class Base64Encoder : IBase64Encoder
     {

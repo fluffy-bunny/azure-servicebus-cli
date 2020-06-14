@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceBusCLI", "ServiceBus
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{06D60577-6CB7-4926-98AC-56EDDF58F5B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureManagementCLI", "AzureManagementCLI\AzureManagementCLI.csproj", "{B1AE9C31-34FE-4D27-9FE2-37C20635B149}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "common\Common.csproj", "{914CAB4B-DD69-4B87-89DB-3F075E73A018}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{06D60577-6CB7-4926-98AC-56EDDF58F5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06D60577-6CB7-4926-98AC-56EDDF58F5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06D60577-6CB7-4926-98AC-56EDDF58F5B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1AE9C31-34FE-4D27-9FE2-37C20635B149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1AE9C31-34FE-4D27-9FE2-37C20635B149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1AE9C31-34FE-4D27-9FE2-37C20635B149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1AE9C31-34FE-4D27-9FE2-37C20635B149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{914CAB4B-DD69-4B87-89DB-3F075E73A018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{914CAB4B-DD69-4B87-89DB-3F075E73A018}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{914CAB4B-DD69-4B87-89DB-3F075E73A018}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{914CAB4B-DD69-4B87-89DB-3F075E73A018}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

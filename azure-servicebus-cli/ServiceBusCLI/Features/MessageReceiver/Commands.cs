@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common;
 using Contracts;
 using McMaster.Extensions.CommandLineUtils;
 using MediatR;

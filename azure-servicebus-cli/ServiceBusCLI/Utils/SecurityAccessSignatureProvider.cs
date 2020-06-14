@@ -1,4 +1,5 @@
-﻿using ServiceBusCLI.Features.GenerateSecurityAccessSignature;
+﻿using Common;
+using ServiceBusCLI.Features.GenerateSecurityAccessSignature;
 
 namespace ServiceBusCLI.Utils
 {

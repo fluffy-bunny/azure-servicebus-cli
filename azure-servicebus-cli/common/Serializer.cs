@@ -1,6 +1,7 @@
-﻿using System.Text.Json;
+﻿using Contracts;
+using System.Text.Json;
 
-namespace Contracts
+namespace Common
 {
     public class Serializer : ISerializer
     {

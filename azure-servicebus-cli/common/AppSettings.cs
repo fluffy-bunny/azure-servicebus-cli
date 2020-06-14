@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace ServiceBusCLI.Utils
+namespace Common
 {
     public class AppSettings<T> where T : class
     {
@@ -28,7 +28,7 @@ namespace ServiceBusCLI.Utils
                 var obj = _serializer.Deserialize<T>(json);
                 return obj;
             }
-                
+
             return null;
         }
     }

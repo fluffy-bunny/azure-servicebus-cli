@@ -17,6 +17,8 @@ using ServiceBusCLI.Utils;
 using Microsoft.Azure.ServiceBus.Core;
 using ServiceBusCLI.Features.MessageReceiver;
 using ServiceBusCLI.Features.SendMessage;
+using Common;
+using Common.Extensions;
 
 namespace ServiceBusCLI
 {
@@ -96,7 +98,6 @@ Set you queue settings;
                     services.AddSingleton<ISecurityAccessSignatureProvider, SecurityAccessSignatureProvider>();
 
 
-                    services.AddSingleton<ISerializer, Serializer>();
                     //                    services.AddTransient<SendJob.Request>();
                     //                    services.AddTransient(typeof(SendJob.Request<>), typeof(SendJob.Request<>));
                     services.AddTransient(typeof(SendMessage<>), typeof(SendMessage<>));
@@ -108,9 +109,9 @@ Set you queue settings;
                     services.AddTransient<Receive.Request>();
                     services.AddTransient<RenewLock.Request>();
 
-                    
 
-                    services.AddTransient(typeof(AppSettings<>), typeof(AppSettings<>));
+                    services.AddCommon();
+
 
 
                 });

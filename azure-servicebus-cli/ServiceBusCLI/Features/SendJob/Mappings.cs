@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Contracts;
+using Common;
 using ServiceBusCLI.Features.SendMessage;
 
 namespace ServiceBusCLI.Features.SendJob
