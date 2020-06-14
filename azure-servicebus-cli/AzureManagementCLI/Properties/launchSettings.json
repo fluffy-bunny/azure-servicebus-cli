@@ -2,7 +2,8 @@
   "profiles": {
     "AzureManagementCLI": {
       "commandName": "Project",
-      "commandLineArgs": "vmss-list -g rg-scalesets"
+      "commandLineArgs1": "vmss-list -g rg-scalesets",
+      "commandLineArgs": "vmss-instances -g rg-scalesets -v W10rs5pr0"
     }
   }
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace AzureManagementCLI.Features.VirtualMachineScaleSet
+namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListCommand
 {
     public class Mappings : Profile
     {

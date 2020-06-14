@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AzureManagementCLI.Features.VirtualMachineScaleSet
+namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListCommand
 {
     public static class VMSSList
     {
@@ -31,47 +31,23 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet
             {
                 Response response = new Response
                 {
-                    Result = new List<IVirtualMachineScaleSet>()
                 };
                 try
                 {
                     var rg = await request.AzureClient.AzureInstance.ResourceGroups.GetByNameAsync(request.ResourceGroup);
+
                     if (rg == null)
                     {
                         throw new Exception($"rg:{request.ResourceGroup} does not exist!");
                     }
-                  
-
-                    var virtualMachineScaleSetsList = 
-                        await request.AzureClient.AzureInstance.VirtualMachineScaleSets
-                        .ListByResourceGroupAsync(rg.Name);
-                    if (virtualMachineScaleSetsList != null)
-                    {
-                        foreach (var item in virtualMachineScaleSetsList)
-                        {
-                            response.Result.Add(item);
-                        }
-                        do
-                        {
-                            virtualMachineScaleSetsList = await virtualMachineScaleSetsList.GetNextPageAsync();
-                            if (virtualMachineScaleSetsList == null)
-                            {
-                                break;
-                            }
-                            foreach (var item in virtualMachineScaleSetsList)
-                            {
-                                response.Result.Add(item);
-                            }
-                        } while (true);
-                    }
-                    
+                    response.Result = await request.AzureClient.AzureInstance.GetScaleSetsForResourceGroupAsync(rg.Name);
                 }
                 catch (Exception ex)
                 {
                     response.Exception = ex;
                     response.Result = null;
                 }
-                 
+
                 return response;
             }
         }

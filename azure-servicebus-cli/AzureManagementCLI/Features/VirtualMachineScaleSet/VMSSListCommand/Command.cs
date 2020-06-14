@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListCommand;
 using McMaster.Extensions.CommandLineUtils;
 using MediatR;
 using System.Text;

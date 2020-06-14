@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using AzureManagementCLI.Features.VirtualMachineScaleSet;
+using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListCommand;
+using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCommand;
 using Common.Extensions;
 using McMaster.Extensions.CommandLineUtils;
 using MediatR;
@@ -8,6 +9,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using static AzureManagementCLI.Features.VirtualMachineScaleSet.Commands;
+using static AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCommand.Commands;
+using static AzureManagementCLI.Features.When.Commands;
 
 namespace AzureManagementCLI
 {
@@ -25,8 +29,10 @@ ARM_TENANT_ID
     [HelpOption]
     [VersionOptionFromMember(MemberName = "GetVersion")]
     [Subcommand(
-        typeof(Features.When.Commands.WhenCommand),
-        typeof(Features.VirtualMachineScaleSet.Commands.VMSSListCommand)
+        typeof(WhenCommand),
+        typeof(VMSSListCommand),
+        typeof(VMSSListInstancesCommand)
+
 
         )
        ]
@@ -58,6 +64,7 @@ ARM_TENANT_ID
                     services.AddCommon();
 
                     services.AddTransient<VMSSList.Request>();
+                    services.AddTransient<VMSSListInstances.Request>();
 
                 });
         }
