@@ -6,15 +6,16 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCommand
+namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSSetCapacityCommand
 {
-    public static class VMSSListInstances
+    public static class VMSSSetCapacity
     {
         public class Request : IRequest<Response>
         {
             public AzureClient AzureClient { get; }
             public string ResourceGroup { get; set; }
             public string ScaleSet { get; set; }
+            public string Capacity { get; set; }
             public Request(AzureClient azureClient)
             {
                 AzureClient = azureClient;
@@ -31,9 +32,13 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCo
         {
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                Response response = new Response{};
+                Response response = new Response
+                {
+
+                };
                 try
                 {
+                    // GetVirtualMachineScaleSetVMs
                     var rg = await request.AzureClient.AzureInstance.ResourceGroups.GetByNameAsync(request.ResourceGroup);
                     if (rg == null)
                     {
@@ -41,6 +46,7 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCo
                     }
 
                     response.VirtualMachineScaleSet = await request.AzureClient.AzureInstance.GetScaleSetAsync(rg.Name, request.ScaleSet);
+                    response.VirtualMachineScaleSet = await response.VirtualMachineScaleSet.Update().WithCapacity(Convert.ToInt32(request.Capacity)).ApplyAsync();
                     response.VirtualMachineScaleSetVMs = await response.VirtualMachineScaleSet.GetVirtualMachineScaleSetVMs();
 
                 }

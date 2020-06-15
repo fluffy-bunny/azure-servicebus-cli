@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Contracts
 {
-    public static class CommonExtensions
+    public static class ContractExtensions
     {
         public static string Base64Decode(this string base64EncodedData)
         {

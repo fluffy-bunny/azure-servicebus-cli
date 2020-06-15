@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListCommand;
+using Common;
 using McMaster.Extensions.CommandLineUtils;
 using MediatR;
 using System.Text;
@@ -20,17 +21,20 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet
                 IMapper mapper,
                 VMSSList.Request request)
             {
-                var command = mapper.Map(this, request);
-                var response = await mediator.Send(command);
-                if (response.Exception != null)
+                using (new DisposableStopwatch(t => Utilities.Log($"VMSSListCommand - {t} elapsed")))
                 {
-                    console.WriteLine($"{response.Exception.Message}");
-                }
-                else
-                {
-                    foreach (var item in response.Result)
+                    var command = mapper.Map(this, request);
+                    var response = await mediator.Send(command);
+                    if (response.Exception != null)
                     {
-                        console.WriteLine($"VMSS: {item.Name}\n Id: {item.Id}\n Capacity: {item.Capacity}");
+                        console.WriteLine($"{response.Exception.Message}");
+                    }
+                    else
+                    {
+                        foreach (var item in response.Result)
+                        {
+                            console.WriteLine($"VMSS: {item.Name}\n Id: {item.Id}\n Capacity: {item.Capacity}");
+                        }
                     }
                 }
             }

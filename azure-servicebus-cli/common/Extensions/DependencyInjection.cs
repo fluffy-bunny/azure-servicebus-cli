@@ -29,7 +29,10 @@ namespace Common.Extensions
         {
             services.AddSingleton<AzureClient>(sp =>
             {
-                return AzureUtils.FetchAzureClient();
+                using (new DisposableStopwatch(t => Utilities.Log($"AzureUtils.FetchAzureClient() - {t} elapsed")))
+                {
+                    return AzureUtils.FetchAzureClient();
+                }
             });
             return services;
         }

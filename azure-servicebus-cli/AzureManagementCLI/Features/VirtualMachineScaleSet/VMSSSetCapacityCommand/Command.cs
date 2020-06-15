@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListCommand;
-using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCommand;
 using Common;
 using McMaster.Extensions.CommandLineUtils;
 using MediatR;
@@ -9,12 +8,12 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceCommand
+namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSSetCapacityCommand
 {
     public static class Commands
     {
-        [Command("vmss-instance-delete", Description = "Delete an VMSS VM instance")]
-        public class VMSSDeleteInstanceCommand
+        [Command("vmss-set-capacity", Description = "List all instances in a VitualMachineScaleSet")]
+        public class VMSSSetCapacityCommand
         {
             [Option("-g|--resource-group", CommandOptionType.SingleValue, Description = "The resource group name")]
             public string ResourceGroup { get; set; }
@@ -22,16 +21,16 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
             [Option("-v|--vmss-name", CommandOptionType.SingleValue, Description = "The VirtualMachineScalseSet name")]
             public string ScaleSet { get; set; }
 
-            [Option("-i|--instance-id", CommandOptionType.SingleValue, Description = "The VirtualMachineScalseSet VM Instance ID")]
-            public string InstanceId { get; set; }
+            [Option("-c|--capacity", CommandOptionType.SingleValue, Description = "The Capacity of the VirtualMachineScalseSet")]
+            public string Capacity { get; set; }
 
             private async Task OnExecuteAsync(
                 IConsole console,
                 IMediator mediator,
                 IMapper mapper,
-                VMSSDeleteInstance.Request request)
+                VMSSSetCapacity.Request request)
             {
-                using (new DisposableStopwatch(t => Utilities.Log($"VMSSDeleteInstanceCommand - {t} elapsed")))
+                using (new DisposableStopwatch(t => Utilities.Log($"VMSSSetCapacityCommand - {t} elapsed")))
                 {
                     Validate();
                     var command = mapper.Map(this, request);
@@ -46,7 +45,11 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
     Id: {response.VirtualMachineScaleSet.Id} 
     Capacity: {response.VirtualMachineScaleSet.Capacity}");
 
-                        console.WriteLine($"Deleted: VMSS: {response.FullVMInstanceId} ");
+                        var vms = response.VirtualMachineScaleSetVMs;
+                        foreach (var item in vms)
+                        {
+                            console.WriteLine($"VMSS: {item.Name}\n Id: {item.Id}\n ComputerName:{item.ComputerName} ");
+                        }
                     }
                 }
             }
@@ -65,25 +68,32 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
                     error = true;
                     sb.Append($"--vmss-name is missing\n");
                 }
-                if (string.IsNullOrWhiteSpace(InstanceId))
+
+                if (string.IsNullOrWhiteSpace(Capacity))
                 {
                     error = true;
-                    sb.Append($"--instance-id is missing\n");
+                    sb.Append($"--capacity is missing\n");
                 }
                 else
                 {
                     try
                     {
-                        Convert.ToInt32(InstanceId);
+                        var capacity = Convert.ToInt32(Capacity);
+                        if(capacity > 100)
+                        {
+                            error = true;
+                            sb.Append("--capacity Rule: Capacity > 100 error.\n");
+                        }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         error = true;
-                        sb.Append("--instance-id is bad\n");
+                        sb.Append("--capacity is bad\n");
                         sb.Append(ex.Message);
                     }
 
                 }
+
                 if (error)
                 {
                     throw new Exception(sb.ToString());

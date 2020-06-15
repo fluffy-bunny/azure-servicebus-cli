@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListCommand;
+using Common;
 using McMaster.Extensions.CommandLineUtils;
 using MediatR;
-using Microsoft.Azure.Management.AppService.Fluent.Models;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,25 +24,35 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCo
                 IMapper mapper,
                 VMSSListInstances.Request request)
             {
-                Validate();
-                var command = mapper.Map(this, request);
-                var response = await mediator.Send(command);
-                if (response.Exception != null)
+                using (new DisposableStopwatch(t => Utilities.Log($"VMSSListInstancesCommand - {t} elapsed")))
                 {
-                    console.WriteLine($"{response.Exception.Message}");
-                }
-                else
-                {
-                    console.WriteLine(@$"VMSS: {response.VirtualMachineScaleSet.Name} 
+                    Validate();
+                    var command = mapper.Map(this, request);
+                    var response = await mediator.Send(command);
+                    if (response.Exception != null)
+                    {
+                        console.WriteLine($"{response.Exception.Message}");
+                    }
+                    else
+                    {
+                        console.WriteLine(@$"VMSS: {response.VirtualMachineScaleSet.Name} 
     Id: {response.VirtualMachineScaleSet.Id} 
     Capacity: {response.VirtualMachineScaleSet.Capacity}");
 
-                    var vms = response.VirtualMachineScaleSetVMs;
-                    foreach (var item in vms)
-                    {
-                        console.WriteLine($"VMSS: {item.Name}\n Id: {item.Id}\n ComputerName:{item.ComputerName} ");
+                        var vms = response.VirtualMachineScaleSetVMs;
+                        foreach (var item in vms)
+                        {
+                            console.WriteLine($"====================\nVMSS: {item.Name}\n  Id: {item.Id}\n  InstanceId: {item.InstanceId}\n  ComputerName:{item.ComputerName}");
+
+                            foreach(var network in item.ListNetworkInterfaces())
+                            {
+                                console.WriteLine($"  Network:.......\n     PrimaryPrivateIP: {network.PrimaryPrivateIP} ");
+                            }
+                            var networkId = item.ListNetworkInterfaces();
+                        }
                     }
                 }
+
             }
 
             private void Validate()
