@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceCommand;
 using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListCommand;
 using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCommand;
 using Common.Extensions;
@@ -10,6 +11,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using static AzureManagementCLI.Features.VirtualMachineScaleSet.Commands;
+using static AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceCommand.Commands;
 using static AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCommand.Commands;
 using static AzureManagementCLI.Features.When.Commands;
 
@@ -31,7 +33,8 @@ ARM_TENANT_ID
     [Subcommand(
         typeof(WhenCommand),
         typeof(VMSSListCommand),
-        typeof(VMSSListInstancesCommand)
+        typeof(VMSSListInstancesCommand),
+        typeof(VMSSDeleteInstanceCommand)
 
 
         )
@@ -65,6 +68,7 @@ ARM_TENANT_ID
 
                     services.AddTransient<VMSSList.Request>();
                     services.AddTransient<VMSSListInstances.Request>();
+                    services.AddTransient<VMSSDeleteInstance.Request>();
 
                 });
         }

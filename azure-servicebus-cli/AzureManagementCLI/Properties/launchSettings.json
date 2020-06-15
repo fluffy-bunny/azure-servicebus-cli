@@ -3,7 +3,8 @@
     "AzureManagementCLI": {
       "commandName": "Project",
       "commandLineArgs1": "vmss-list -g rg-scalesets",
-      "commandLineArgs": "vmss-instances -g rg-scalesets -v W10rs5pr0"
+      "commandLineArgs2": "vmss-instances       -g rg-scalesets -v W10rs5pr0",
+      "commandLineArgs": "vmss-instance-delete -g rg-scalesets -v W10rs5pr0 -i 214"
     }
   }
 }
