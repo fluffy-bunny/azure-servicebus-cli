@@ -25,17 +25,13 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSSetCapacityComm
         public class Response
         {
             public IVirtualMachineScaleSet VirtualMachineScaleSet { get; set; }
-            public List<IVirtualMachineScaleSetVM> VirtualMachineScaleSetVMs { get; set; }
             public Exception Exception { get; set; }
         }
         public class Handler : IRequestHandler<Request, Response>
         {
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                Response response = new Response
-                {
-
-                };
+                Response response = new Response{};
                 try
                 {
                     // GetVirtualMachineScaleSetVMs
@@ -44,10 +40,35 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSSetCapacityComm
                     {
                         throw new Exception($"rg:{request.ResourceGroup} does not exist!");
                     }
-
                     response.VirtualMachineScaleSet = await request.AzureClient.AzureInstance.GetScaleSetAsync(rg.Name, request.ScaleSet);
-                    response.VirtualMachineScaleSet = await response.VirtualMachineScaleSet.Update().WithCapacity(Convert.ToInt32(request.Capacity)).ApplyAsync();
-                    response.VirtualMachineScaleSetVMs = await response.VirtualMachineScaleSet.GetVirtualMachineScaleSetVMs();
+                    var capacity = Convert.ToInt32(request.Capacity);
+                    var timeSpan = new TimeSpan(0, 0, 5);
+                    using (var cancellationTokenSource = new CancellationTokenSource(timeSpan))
+                    {
+                        try
+                        {
+                            response.VirtualMachineScaleSet = await response.VirtualMachineScaleSet
+                                                            .Update()
+                                                            .WithCapacity(capacity)
+                                                            .ApplyAsync(cancellationTokenSource.Token);
+                        }
+                        catch (TaskCanceledException)
+                        {
+                            Console.WriteLine("Task was cancelled");
+                        }
+                    }
+                    int loops = 5;
+                    do
+                    {
+                        await response.VirtualMachineScaleSet.RefreshAsync();
+                        if(response.VirtualMachineScaleSet.Capacity == capacity)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(1000);
+                        --loops;
+                    } while (loops>0);
+
 
                 }
                 catch (Exception ex)

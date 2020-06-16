@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.Azure.Management.Compute.Fluent.Models;
 
 namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceCommand
 {
@@ -28,6 +30,7 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
             public List<IVirtualMachineScaleSetVM> VirtualMachineScaleSetVMs { get; set; }
             public Exception Exception { get; set; }
             public string FullVMInstanceId { get; internal set; }
+            public VirtualMachineInstanceView InstanceView { get; internal set; }
         }
         public class Handler : IRequestHandler<Request, Response>
         {
@@ -50,10 +53,39 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
                     var fullVMInstanceId = $"/subscriptions/{subscriptionId}/resourceGroups/{request.ResourceGroup}/providers/Microsoft.Compute/virtualMachineScaleSets/{request.ScaleSet}/virtualMachines/{request.InstanceId}";
 
                     var vmInstance = response.VirtualMachineScaleSet.VirtualMachines.GetInstance(request.InstanceId);
-                    if(vmInstance != null)
+                    var view = vmInstance.InstanceView;
+                    if (vmInstance != null)
                     {
                         response.FullVMInstanceId = fullVMInstanceId;
-                        await vmInstance.DeleteAsync();
+                        response.InstanceView = vmInstance.InstanceView;
+                        var timeSpan = new TimeSpan(0, 0, 5);
+                        using (var cancellationTokenSource = new CancellationTokenSource(timeSpan))
+                        {
+                            try
+                            {
+                                await vmInstance.DeleteAsync(cancellationTokenSource.Token);
+                            }
+                            catch (TaskCanceledException)
+                            {
+                                Console.WriteLine("Task was cancelled");
+                            }
+                        }
+                        int loops = 5;
+                        do
+                        {
+                            await vmInstance.RefreshInstanceViewAsync();
+                            response.InstanceView = vmInstance.InstanceView;
+                            var query = from item in vmInstance.InstanceView.Statuses
+                                        where item.Code == "ProvisioningState/deleting"
+                                        select item;
+                            if (query.Any())
+                            {
+                                break;
+                            }
+                            Thread.Sleep(1000);
+                            --loops;
+                        } while (loops > 0);
+
                         await response.VirtualMachineScaleSet.RefreshAsync();
                     }
                 }

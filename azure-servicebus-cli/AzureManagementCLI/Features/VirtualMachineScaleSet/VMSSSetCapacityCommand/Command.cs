@@ -45,11 +45,7 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSSetCapacityComm
     Id: {response.VirtualMachineScaleSet.Id} 
     Capacity: {response.VirtualMachineScaleSet.Capacity}");
 
-                        var vms = response.VirtualMachineScaleSetVMs;
-                        foreach (var item in vms)
-                        {
-                            console.WriteLine($"VMSS: {item.Name}\n Id: {item.Id}\n ComputerName:{item.ComputerName} ");
-                        }
+ 
                     }
                 }
             }

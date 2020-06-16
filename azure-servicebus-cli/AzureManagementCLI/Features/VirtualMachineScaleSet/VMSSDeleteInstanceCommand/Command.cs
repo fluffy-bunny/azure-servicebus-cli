@@ -47,6 +47,10 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
     Capacity: {response.VirtualMachineScaleSet.Capacity}");
 
                         console.WriteLine($"Deleted: VMSS: {response.FullVMInstanceId} ");
+                        foreach(var item in response.InstanceView.Statuses)
+                        {
+                            console.WriteLine($"   Status: {item.Code} ");
+                        }
                     }
                 }
             }

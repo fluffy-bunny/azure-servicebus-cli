@@ -43,12 +43,17 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCo
                         foreach (var item in vms)
                         {
                             console.WriteLine($"====================\nVMSS: {item.Name}\n  Id: {item.Id}\n  InstanceId: {item.InstanceId}\n  ComputerName:{item.ComputerName}");
+                            foreach(var status in item.InstanceView.Statuses)
+                            {
+                                console.WriteLine($"  status: {status.Code}");
 
-                            foreach(var network in item.ListNetworkInterfaces())
+                            }
+                            /*
+                            foreach (var network in item.ListNetworkInterfaces())
                             {
                                 console.WriteLine($"  Network:.......\n     PrimaryPrivateIP: {network.PrimaryPrivateIP} ");
                             }
-                            var networkId = item.ListNetworkInterfaces();
+                            */
                         }
                     }
                 }
