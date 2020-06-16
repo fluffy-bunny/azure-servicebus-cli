@@ -13,11 +13,13 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCo
         public class Request : IRequest<Response>
         {
             public AzureClient AzureClient { get; }
+            public IAzureManagementTokenProvider AzureManagementTokenProvider { get; }
             public string ResourceGroup { get; set; }
             public string ScaleSet { get; set; }
-            public Request(AzureClient azureClient)
+            public Request(AzureClient azureClient, IAzureManagementTokenProvider azureManagementTokenProvider)
             {
                 AzureClient = azureClient;
+                AzureManagementTokenProvider = azureManagementTokenProvider;
             }
         }
 
@@ -34,6 +36,7 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCo
                 Response response = new Response{};
                 try
                 {
+                    var t = await request.AzureManagementTokenProvider.AcquireAccessTokenAsync();
                     var rg = await request.AzureClient.AzureInstance.ResourceGroups.GetByNameAsync(request.ResourceGroup);
                     if (rg == null)
                     {

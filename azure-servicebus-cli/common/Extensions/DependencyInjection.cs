@@ -13,6 +13,8 @@ namespace Common.Extensions
             services.AddSerializer();
             services.AddBase64Encoder();
             services.AddTransient(typeof(AppSettings<>), typeof(AppSettings<>));
+            services.AddSingleton<IAzureManagementTokenProvider, AzureManagementTokenProvider>();
+            services.AddSingleton<IAzureManagementApi, AzureManagementApi>();
             return services;
         }
         public static IServiceCollection AddSerializer(this IServiceCollection services)

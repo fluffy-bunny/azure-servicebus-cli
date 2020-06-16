@@ -4,7 +4,7 @@
       "commandName": "Project",
       "commandLineArgs1": "vmss-list            -g rg-scalesets",
       "commandLineArgs2": "vmss-instances       -g rg-scalesets -v w10rs5p0",
-      "commandLineArgs": "vmss-instance-delete -g rg-scalesets -v w10rs5p0 -i 95",
+      "commandLineArgs": "vmss-instance-delete -g rg-scalesets -v w10rs5p0 -i 99",
       "commandLineArgs4": "vmss-set-capacity    -g rg-scalesets -v w10rs5p0 -c 30"
     }
   }

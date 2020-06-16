@@ -1,15 +1,19 @@
-﻿using Microsoft.Azure.Management.Fluent;
+﻿using IdentityModel.Client;
+using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
 using Microsoft.Azure.Services.AppAuthentication;
 using System;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace Common
 {
+
     public static class AzureUtils
     {
-        
         public static AzureClient FetchAzureClient()
         {
             try

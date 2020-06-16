@@ -15,12 +15,14 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
         public class Request : IRequest<Response>
         {
             public AzureClient AzureClient { get; }
+            public IAzureManagementApi AzureManagementApi { get; }
             public string ResourceGroup { get; set; }
             public string ScaleSet { get; set; }
             public string InstanceId { get; set; }
-            public Request(AzureClient azureClient)
+            public Request(AzureClient azureClient, IAzureManagementApi azureManagementApi)
             {
                 AzureClient = azureClient;
+                AzureManagementApi = azureManagementApi;
             }
         }
 
@@ -61,6 +63,8 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
                         var timeSpan = new TimeSpan(0, 0, 5);
                         using (var cancellationTokenSource = new CancellationTokenSource(timeSpan))
                         {
+                            var response2 = await request.AzureManagementApi.DeleteVirtualMachineScaleSetVM(subscriptionId, rg.Name, response.VirtualMachineScaleSet.Name, request.InstanceId, cancellationTokenSource.Token);
+                            /*
                             try
                             {
                                 await vmInstance.DeleteAsync(cancellationTokenSource.Token);
@@ -69,6 +73,7 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
                             {
                                 Console.WriteLine("Task was cancelled");
                             }
+                            */
                         }
                         int loops = 5;
                         do
