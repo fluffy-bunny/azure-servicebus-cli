@@ -1,8 +1,8 @@
-﻿using Contracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,11 +20,13 @@ namespace Common
         }
         class Body
         {
-            public List<string> InstanceId = new List<string>();
+            [JsonPropertyName("instanceIds")]
+            public List<string> InstanceId { get; set; }
         }
         public async Task<HttpResponseMessage> DeleteVirtualMachineScaleSetVM(string subscriptionId, string resourceGroupName, 
-            string vmScaleSetName, string instanceId, CancellationToken cancellationToken = default)
+            string vmScaleSetName, List<string> instanceIds, CancellationToken cancellationToken = default)
         {
+            // https://docs.microsoft.com/en-us/rest/api/compute/virtualmachinescalesets/deleteinstances
             try
             {
                 var token = await _azureManagementTokenProvider.AcquireAccessTokenAsync();
@@ -32,8 +34,10 @@ namespace Common
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-                var body = new Body();
-                body.InstanceId.Add(instanceId);
+                var body = new Body()
+                {
+                    InstanceId = instanceIds
+                };
                 var jsonBody = _serializer.Serialize(body);
                 var data = new StringContent(jsonBody, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(uri, data, cancellationToken);
@@ -44,6 +48,7 @@ namespace Common
                 throw;
             }
         }
- 
+
+      
     }
 }

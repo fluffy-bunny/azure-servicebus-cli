@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Common;
-using Contracts;
 using MediatR;
 using ServiceBusCLI.Utils;
 using System;

@@ -1,5 +1,4 @@
-﻿using Contracts;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Common
 {
@@ -10,9 +9,14 @@ namespace Common
             return JsonSerializer.Deserialize<T>(text);
         }
 
-        public string Serialize<T>(T obj) where T : class
+        public string Serialize<T>(T obj, bool indent = false) where T : class
         {
-            return JsonSerializer.Serialize(obj);
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                WriteIndented = indent
+            };
+            return JsonSerializer.Serialize(obj, options);
         }
+
     }
 }
