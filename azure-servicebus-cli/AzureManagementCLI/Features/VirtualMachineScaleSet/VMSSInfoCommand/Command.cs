@@ -43,7 +43,6 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSInfoCommand
                     }
                     else
                     {
-                        var json = 
                         console.WriteLine(await response.HttpResponseMessage.PrettyJsonAsync(serializer));
                     }
                 }

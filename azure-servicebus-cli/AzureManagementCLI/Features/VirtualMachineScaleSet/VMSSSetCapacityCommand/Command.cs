@@ -28,6 +28,7 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSSetCapacityComm
                 IConsole console,
                 IMediator mediator,
                 IMapper mapper,
+                ISerializer serializer,
                 VMSSSetCapacity.Request request)
             {
                 using (new DisposableStopwatch(t => Utilities.Log($"VMSSSetCapacityCommand - {t} elapsed")))
@@ -41,11 +42,7 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSSetCapacityComm
                     }
                     else
                     {
-                        console.WriteLine(@$"VMSS: {response.VirtualMachineScaleSet.Name} 
-    Id: {response.VirtualMachineScaleSet.Id} 
-    Capacity: {response.VirtualMachineScaleSet.Capacity}");
-
- 
+                        console.WriteLine(await response.HttpResponseMessage.PrettyJsonAsync(serializer));
                     }
                 }
             }
