@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceCommand;
 using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListCommand;
 using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListInstancesCommand;
 using Common;
@@ -11,12 +12,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceCommand
+namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSInfoCommand
 {
     public static class Commands
     {
-        [Command("vmss-instance-delete", Description = "Delete an VMSS VM instance")]
-        public class VMSSDeleteInstanceCommand
+        [Command("vmss-info", Description = "Get VMSS Information")]
+        public class VMSSInfoCommand
         {
             [Option("-g|--resource-group", CommandOptionType.SingleValue, Description = "The resource group name")]
             public string ResourceGroup { get; set; }
@@ -24,15 +25,12 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
             [Option("-v|--vmss-name", CommandOptionType.SingleValue, Description = "The VirtualMachineScalseSet name")]
             public string ScaleSet { get; set; }
 
-            [Option("-i|--instance-id", CommandOptionType.SingleValue, Description = "The VirtualMachineScalseSet VM Instance ID, i.e. --instance-id ['193','194']")]
-            public string InstanceIds { get; set; }
-
             private async Task OnExecuteAsync(
                 IConsole console,
                 IMediator mediator,
                 ISerializer serializer,
                 IMapper mapper,
-                VMSSDeleteInstance.Request request)
+                VMSSInfo.Request request)
             {
                 using (new DisposableStopwatch(t => Utilities.Log($"VMSSDeleteInstanceCommand - {t} elapsed")))
                 {
@@ -45,10 +43,7 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
                     }
                     else
                     {
-                        console.WriteLine(@$"VMSS: {response.VirtualMachineScaleSet.Name} 
-    Id: {response.VirtualMachineScaleSet.Id} 
-    Capacity: {response.VirtualMachineScaleSet.Capacity}");
-
+                        var json = 
                         console.WriteLine(await response.HttpResponseMessage.PrettyJsonAsync(serializer));
                     }
                 }
@@ -68,30 +63,7 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceC
                     error = true;
                     sb.Append($"--vmss-name is missing\n");
                 }
-                if (string.IsNullOrWhiteSpace(InstanceIds))
-                {
-                    error = true;
-                    sb.Append($"--instance-id is missing\n");
-                }
-                else
-                {
-                    try
-                    {
-                        InstanceIds = InstanceIds.Replace('\'', '"');
-                        var ids = serializer.Deserialize<List<string>>(InstanceIds);
-                        foreach(var id in ids)
-                        {
-                            Convert.ToInt32(id);
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        error = true;
-                        sb.Append($"--instance-id is bad ->{InstanceIds}\n");
-                        sb.Append(ex.Message);
-                    }
-
-                }
+            
                 if (error)
                 {
                     throw new Exception(sb.ToString());
