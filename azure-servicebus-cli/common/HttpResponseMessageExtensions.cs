@@ -26,13 +26,21 @@ namespace Common
         public static async Task<string> PrettyJsonAsync(this HttpResponseMessage httpResponseMessage, ISerializer serializer)
         {
             var jsonContent = await httpResponseMessage.Content.ReadAsStringAsync();
-      
-          
+
+            object content = "";
+            try
+            {
+                content = serializer.Deserialize<object>(jsonContent);
+            }
+            catch(Exception ex)
+            {
+                content = "";
+            }
             var handle = new HttpResponseMessageHandle
             {
                 StatusCode = httpResponseMessage.StatusCode,
                 Headers = new List<HeaderHandle>(),
-                Content = serializer.Deserialize<object>(jsonContent)
+                Content = content
             };
          
             foreach(var header in httpResponseMessage.Headers)
