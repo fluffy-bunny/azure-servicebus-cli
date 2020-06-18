@@ -46,7 +46,7 @@ namespace AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSSetCapacityComm
                     {
                         try
                         {
-                            response.HttpResponseMessage = await request.AzureManagementApi.SetVirtualMachineScaleSetCapacity(subscriptionId,
+                            response.HttpResponseMessage = await request.AzureManagementApi.PatchVirtualMachineScaleSetCapacity(subscriptionId,
                                 request.ResourceGroup, request.ScaleSet, capacity, cancellationTokenSource.Token);
                         }
                         catch (TaskCanceledException tex)

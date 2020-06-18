@@ -15,8 +15,11 @@ namespace Common
     {
         Task<HttpResponseMessage> DeleteVirtualMachineScaleSetVM(string subscriptionId, string resourceGroupName,
             string vmScaleSetName, List<string> instanceIds, CancellationToken cancellationToken = default);
-        Task<HttpResponseMessage> SetVirtualMachineScaleSetCapacity(string subscriptionId, string resourceGroupName,
+
+        Task<HttpResponseMessage> PutVirtualMachineScaleSetCapacity(string subscriptionId, string resourceGroupName,
             string vmScaleSetName, int capacity, CancellationToken cancellationToken = default);
+        Task<HttpResponseMessage> PatchVirtualMachineScaleSetCapacity(string subscriptionId, string resourceGroupName,
+           string vmScaleSetName, int capacity, CancellationToken cancellationToken = default);
 
         Task<VirtualMachineScaleSetResponse> GetVirtualMachineScaleSetInfo(string subscriptionId, string resourceGroupName,
             string vmScaleSetName, CancellationToken cancellationToken = default);

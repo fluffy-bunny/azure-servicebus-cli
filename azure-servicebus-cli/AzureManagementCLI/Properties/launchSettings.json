@@ -5,7 +5,7 @@
       "commandLineArgs1": "vmss-list            -g rg-scalesets",
       "commandLineArgs2": "vmss-instances       -g rg-scalesets -v w10rs5p0",
       "commandLineArgs3": "vmss-instance-delete -g rg-scalesets -v w10rs5p0 -i ['193','194']",
-      "commandLineArgs": "vmss-set-capacity    -g rg-scalesets -v w10rs5p0 -c 30",
+      "commandLineArgs": "vmss-set-capacity    -g rg-scalesets -v w10rs5p0 -c 2",
       "commandLineArgs5": "vmss-info            -g rg-scalesets -v w10rs5p0"
     }
   }

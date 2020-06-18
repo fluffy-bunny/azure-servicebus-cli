@@ -51,7 +51,7 @@ namespace Common
             }
         }
 
-        public async Task<HttpResponseMessage> SetVirtualMachineScaleSetCapacity(string subscriptionId, string resourceGroupName, string vmScaleSetName, int capacity, CancellationToken cancellationToken = default)
+        public async Task<HttpResponseMessage> PutVirtualMachineScaleSetCapacity(string subscriptionId, string resourceGroupName, string vmScaleSetName, int capacity, CancellationToken cancellationToken = default)
         {
             var response = await GetVirtualMachineScaleSetInfo(subscriptionId, resourceGroupName, vmScaleSetName, cancellationToken);
             if(response.VirtualMachineScaleSet.Sku.Capacity == capacity)
@@ -96,6 +96,39 @@ namespace Common
             {
                 throw;
             }
+        }
+        public class VirtualMachineScaleSetCapacityPatchHandle
+        {
+            public class SkuHandle
+            {
+                [JsonPropertyName("capacity")]
+                public long Capacity { get; set; }
+            }
+            [JsonPropertyName("sku")]
+            public SkuHandle Sku { get; set; }
+        }
+
+        public async Task<HttpResponseMessage> PatchVirtualMachineScaleSetCapacity(string subscriptionId, string resourceGroupName, string vmScaleSetName, int capacity, CancellationToken cancellationToken = default)
+        {
+            var patchData = new VirtualMachineScaleSetCapacityPatchHandle
+            {
+                Sku = new VirtualMachineScaleSetCapacityPatchHandle.SkuHandle
+                {
+                    Capacity = capacity
+                }
+            };
+
+            var token = await _azureManagementTokenProvider.AcquireAccessTokenAsync();
+            var uri = $"https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}?api-version=2019-12-01";
+
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+            var jsonBody = _serializer.Serialize(patchData);
+            var data = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            var response = await client.PatchAsync(uri, data, cancellationToken);
+            return response;
         }
     }
 }

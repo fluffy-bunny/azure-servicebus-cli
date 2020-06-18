@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureManagementCLI", "Azure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "common\Common.csproj", "{914CAB4B-DD69-4B87-89DB-3F075E73A018}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerService1", "WorkerService1\WorkerService1.csproj", "{CA9706A1-0FAD-43FC-BC4E-BBE89E6903CF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{914CAB4B-DD69-4B87-89DB-3F075E73A018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{914CAB4B-DD69-4B87-89DB-3F075E73A018}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{914CAB4B-DD69-4B87-89DB-3F075E73A018}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA9706A1-0FAD-43FC-BC4E-BBE89E6903CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA9706A1-0FAD-43FC-BC4E-BBE89E6903CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA9706A1-0FAD-43FC-BC4E-BBE89E6903CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA9706A1-0FAD-43FC-BC4E-BBE89E6903CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
