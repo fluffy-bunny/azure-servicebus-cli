@@ -51,7 +51,7 @@ namespace Common
             }
         }
 
-        public async Task<HttpResponseMessage> SetVirtualMachineScaleSetVMCapacity(string subscriptionId, string resourceGroupName, string vmScaleSetName, int capacity, CancellationToken cancellationToken = default)
+        public async Task<HttpResponseMessage> SetVirtualMachineScaleSetCapacity(string subscriptionId, string resourceGroupName, string vmScaleSetName, int capacity, CancellationToken cancellationToken = default)
         {
             var response = await GetVirtualMachineScaleSetInfo(subscriptionId, resourceGroupName, vmScaleSetName, cancellationToken);
             if(response.VirtualMachineScaleSet.Sku.Capacity == capacity)
