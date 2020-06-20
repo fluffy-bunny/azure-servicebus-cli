@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Azure.Security.KeyVault.Keys;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +29,7 @@ namespace Common.Extensions
             services.AddSingleton<IBase64Encoder, Base64Encoder>();
             return services;
         }
-        public static IServiceCollection AddAzureClient(this IServiceCollection services)
+        public static IServiceCollection AddAzureClients(this IServiceCollection services)
         {
             services.AddSingleton<AzureClient>(sp =>
             {
@@ -35,6 +38,17 @@ namespace Common.Extensions
                     return AzureUtils.FetchAzureClient();
                 }
             });
+            services.AddSingleton<KeyVaultClient>(sp =>
+            {
+                var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                var authCallback = new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback);
+                return new KeyVaultClient(authCallback);
+            });
+            services.AddSingleton<AzureKeyVaultTokenCredential>();
+            services.AddSingleton<IAzureKeyVaultClients, AzureKeyVaultClients>();
+            services.AddSingleton<IAzureKeyVaultServices, AzureKeyVaultServices>();
+      
+
             return services;
         }
     }

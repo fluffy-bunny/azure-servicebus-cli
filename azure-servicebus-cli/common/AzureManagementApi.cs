@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Common
 {
+
     public class AzureManagementApi: IAzureManagementApi
     {
         private ISerializer _serializer;

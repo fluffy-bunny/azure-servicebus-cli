@@ -31,11 +31,11 @@ namespace Common
                     ClientSecret = clientSecret
                 };
                 var credentials = new AzureCredentials(loginInfo, tenantId, AzureEnvironment.AzureGlobalCloud);
-                var azureAuth = Azure.Configure()
+                var azureAuth = Microsoft.Azure.Management.Fluent.Azure.Configure()
                              .WithLogLevel(HttpLoggingDelegatingHandler.Level.BodyAndHeaders)
                              .Authenticate(credentials);
 
-                var azure = Azure
+                var azure = Microsoft.Azure.Management.Fluent.Azure
                                  .Configure()
                                  .WithLogLevel(HttpLoggingDelegatingHandler.Level.BodyAndHeaders)
                                  .Authenticate(credentials)
