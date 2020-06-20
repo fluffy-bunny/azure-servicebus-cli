@@ -13,7 +13,8 @@ namespace Common
         {
             JsonSerializerOptions options = new JsonSerializerOptions
             {
-                WriteIndented = indent
+                WriteIndented = indent,
+                IgnoreNullValues = true
             };
             return JsonSerializer.Serialize(obj, options);
         }
