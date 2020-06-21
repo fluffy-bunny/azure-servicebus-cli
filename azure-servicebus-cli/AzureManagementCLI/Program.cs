@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AzureManagementCLI.Features.KeyVault.ECDsaJwksCommand;
+using AzureManagementCLI.Features.KeyVault.ECDsaSignJWTCommand;
 using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceCommand;
 using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSInfoCommand;
 using AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSListCommand;
@@ -14,6 +15,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using static AzureManagementCLI.Features.KeyVault.ECDsaJwksCommand.Commands;
+using static AzureManagementCLI.Features.KeyVault.ECDsaSignJWTCommand.Commands;
 using static AzureManagementCLI.Features.VirtualMachineScaleSet.Commands;
 using static AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSDeleteInstanceCommand.Commands;
 using static AzureManagementCLI.Features.VirtualMachineScaleSet.VMSSInfoCommand.Commands;
@@ -43,7 +45,8 @@ ARM_TENANT_ID
         typeof(VMSSDeleteInstanceCommand),
         typeof(VMSSSetCapacityCommand),
         typeof(VMSSInfoCommand),
-        typeof(ECDsaJwksCommand)
+        typeof(ECDsaJwksCommand),
+        typeof(ECDsaSignJWTCommand)
         )
        ]
     internal class Program
@@ -80,7 +83,8 @@ ARM_TENANT_ID
                     services.AddTransient<VMSSSetCapacity.Request>();
                     services.AddTransient<VMSSInfo.Request>();
                     services.AddTransient<ECDsaJwks.Request>();
-
+                    services.AddTransient<ECDsaSignJWT.Request>();
+ 
                 });
         }
         private int OnExecute(CommandLineApplication app, IConsole console)
